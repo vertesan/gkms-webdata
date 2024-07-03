@@ -166,7 +166,7 @@ export default {
 		}
 
 		response = await constructResponse(apiType, env)
-		response.headers.append("Cache-Control", "s-maxage=3600")
+		response.headers.append("Cache-Control", "public, max-age=150")
 		ctx.waitUntil(cache.put(cacheKey, response.clone()))
 		return response
 	},
