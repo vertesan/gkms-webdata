@@ -1,5 +1,12 @@
-import { Cidol, Csprt, Master, UsedDB, isNonNull } from "~/types"
+import { Cidol, Csprt, Master, PCard, UsedDB, isNonNull } from "~/types"
 import { MappedUsedDBTuple, UnionArrayToTuple } from "~/types/utils"
+
+export async function getPCard(env: Env): Promise<PCard | null> {
+  return await getAllJson([
+    "ProduceCard",
+    "ProduceExamEffect",
+  ], env)
+}
 
 export async function getMaster(env: Env): Promise<Master | null> {
   return await getAllJson([

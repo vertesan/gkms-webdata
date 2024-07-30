@@ -39,6 +39,7 @@ import {
   ProduceExamBattleConfig,
   ProduceExamBattleNpcGroup,
   ProduceExamBattleScoreConfig,
+  ProduceExamEffect,
   ProduceExamGimmickEffectGroup,
   ProduceItem,
   ProduceSkill,
@@ -55,6 +56,7 @@ import {
   SupportCardProduceSkillLevelVisual,
   SupportCardProduceSkillLevelVocal,
 } from "~/types/proto/pmaster"
+import { UnArray } from "~/types/utils"
 
 export type UsedDB = {
   // response
@@ -103,6 +105,8 @@ export type UsedDB = {
   ProduceExamBattleConfig: ProduceExamBattleConfig[]
   ProduceExamBattleScoreConfig: ProduceExamBattleScoreConfig[]
   ProduceExamGimmickEffectGroup: ProduceExamGimmickEffectGroup[]
+  // produce card
+  ProduceExamEffect: ProduceExamEffect[]
 }
 
 export type Master = [
@@ -239,6 +243,17 @@ export type XIdolCard = IdolCard & {
     { examBattleScoreConfigs: ProduceExamBattleScoreConfig[] } &
     { examGimmicks?: ProduceExamGimmickEffectGroup[] }
   )[]
+}
+
+export type PCard = [
+  ProduceCard[],
+  ProduceExamEffect[],
+]
+
+export type XProduceCard = Omit<ProduceCard, 'playEffects'> & {
+  playEffects: (UnArray<ProduceCard['playEffects']> & {
+    produceExamEffect: Pick<ProduceExamEffect, 'id' | 'effectType' | 'effectValue1' | 'effectValue2' | 'effectCount' | 'effectTurn'>
+  })[]
 }
 
 export function isNonNull<T extends unknown[]>(args: T): args is { [P in keyof T]: NonNullable<T[P]> } {
