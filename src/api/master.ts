@@ -1,9 +1,7 @@
-import { Master, XMaster } from "~/types";
+import { filterItems } from "~/api/apiUtils";
+import { getExamEffects, getSingleXProduceCard } from "~/api/pcard";
+import { Master, XMaster, XProduceCard } from "~/types";
 import { EventType, ProducePlanType } from "~/types/proto/penum";
-import {
-  ProduceCard
-} from "~/types/proto/pmaster";
-import { filterItems } from "./apiUtils";
 
 export function getXMaster([
   Version,
@@ -29,6 +27,8 @@ export function getXMaster([
   CharacterDetail,
   Achievement,
   AchievementProgress,
+  EventLabel,
+  ProduceExamEffect,
 ]: Master): XMaster {
 
   const characters = Characters.reduce<XMaster['characters']>((acc, cur) => {
@@ -96,17 +96,18 @@ export function getXMaster([
       }
     })
 
+  const examEffects = getExamEffects(ProduceExamEffect)
   let pvp
   const pvpRateConfigRaw = PvpRateConfig.find(x => x.id === PvpRateGetResponse.pvpRateConfigId)
   if (pvpRateConfigRaw) {
     const examSetting = ExamSetting.find(x => x.id === pvpRateConfigRaw.examSettingId)
     const produceExamBattleScoreConfigs = filterItems(ProduceExamBattleScoreConfig, "id", pvpRateConfigRaw.produceExamBattleScoreConfigId, { sortRules: ["parameter", true] })
     const pvpRateCommonProduceCards = filterItems(PvpRateCommonProduceCard, "id", pvpRateConfigRaw.pvpRateCommonProduceCardId)
-    const commonProduceCards: Partial<{ [x in ProducePlanType]: ProduceCard[] }> = {}
+    const commonProduceCards: Partial<{ [x in ProducePlanType]: XProduceCard[] }> = {}
     pvpRateCommonProduceCards.forEach(pvpCommonCard => {
       const cards = pvpCommonCard.produceCards.map(card => {
         return ProduceCard.find(pCard => pCard.id === card.id && pCard.upgradeCount === card.upgradeCount)!
-      })
+      }).map(x => getSingleXProduceCard(x, examEffects))
       commonProduceCards[pvpCommonCard.planType] = cards
     })
     const stages = pvpRateConfigRaw.stages.map(stage => {
@@ -164,5 +165,6 @@ export function getXMaster([
     pvp,
     characterDetails,
     achievements,
+    eventLabels: EventLabel,
   }
 }

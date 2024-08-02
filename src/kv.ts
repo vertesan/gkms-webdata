@@ -33,6 +33,8 @@ export async function getMaster(env: Env): Promise<Master | null> {
     "CharacterDetail",
     "Achievement",
     "AchievementProgress",
+    "EventLabel",
+    "ProduceExamEffect",
   ], env)
 }
 
@@ -50,6 +52,7 @@ export async function getCsprt(env: Env): Promise<Csprt | null> {
     "SupportCardProduceSkillLevelAssist",
     "ProduceSkill",
     "ProduceTrigger",
+    "ProduceExamEffect",
   ], env)
 }
 
@@ -71,6 +74,7 @@ export async function getCidol(env: Env): Promise<Cidol | null> {
     "ProduceExamBattleConfig",
     "ProduceExamBattleScoreConfig",
     "ProduceExamGimmickEffectGroup",
+    "ProduceExamEffect",
   ], env)
 }
 

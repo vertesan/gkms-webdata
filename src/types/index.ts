@@ -19,6 +19,7 @@ import {
   Character,
   CharacterDetail,
   CharacterTrueEndBonus,
+  EventLabel,
   ExamInitialDeck,
   ExamSetting,
   IdolCard,
@@ -80,6 +81,7 @@ export type UsedDB = {
   CharacterDetail: CharacterDetail[],
   Achievement: Achievement[],
   AchievementProgress: AchievementProgress[],
+  EventLabel: EventLabel[],
   // csprt, cidol
   SupportCard: SupportCard[]
   ProduceCard: ProduceCard[]
@@ -133,6 +135,8 @@ export type Master = [
   CharacterDetail[],
   Achievement[],
   AchievementProgress[],
+  EventLabel[],
+  ProduceExamEffect[],
 ]
 
 export type XMaster = {
@@ -154,12 +158,13 @@ export type XMaster = {
     Event &
     { storyEvent?: StoryEvent }
   )[],
+  eventLabels: EventLabel[],
   pvp?: Pick<PvpRateGetResponse, 'startTime' | 'endTime' | 'pvpRateConfigId'> &
   {
     pvpRateConfig: Omit<PvpRateConfig, 'stages'> &
     { examSetting: ExamSetting } &
     { produceExamBattleScoreConfigs: ProduceExamBattleScoreConfig[] } &
-    { commonProduceCards: Partial<{ [x in ProducePlanType]: ProduceCard[] }> } &
+    { commonProduceCards: Partial<{ [x in ProducePlanType]: XProduceCard[] }> } &
     {
       stages: (
         PvpRateConfig_Stage &
@@ -185,10 +190,11 @@ export type Csprt = [
   SupportCardProduceSkillLevelAssist[],
   ProduceSkill[],
   ProduceTrigger[],
+  ProduceExamEffect[],
 ]
 
 export type XSupportCard = SupportCard & {
-  produceCards: ProduceCard[],
+  produceCards: XProduceCard[],
   produceItems: ProduceItem[],
   produceEvents: (
     ProduceEventSupportCard &
@@ -219,10 +225,11 @@ export type Cidol = [
   ProduceExamBattleConfig[],
   ProduceExamBattleScoreConfig[],
   ProduceExamGimmickEffectGroup[],
+  ProduceExamEffect[],
 ]
 
 export type XIdolCard = IdolCard & {
-  produceCards: ProduceCard[],
+  produceCards: XProduceCard[],
   produceItems: ProduceItem[],
   idolCardSkins: IdolCardSkin[],
   levelLimits: (

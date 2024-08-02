@@ -9,6 +9,7 @@ import {
   SupportCardProduceSkillLevelAssist
 } from "~/types/proto/pmaster";
 import { filterItems } from "~/api/apiUtils";
+import { getExamEffects, getSingleXProduceCard } from "~/api/pcard";
 
 export function getXSupportCard([
   SupportCards,
@@ -23,6 +24,7 @@ export function getXSupportCard([
   SupportCardProduceSkillLevelAssists,
   ProduceSkills,
   ProduceTriggers,
+  ProduceExamEffect,
 ]: Csprt
 ): XSupportCard[] {
   const supportCardProduceSkillLevels = [
@@ -31,8 +33,12 @@ export function getXSupportCard([
     ...SupportCardProduceSkillLevelVisuals,
     ...SupportCardProduceSkillLevelVocals,
   ]
+  const examEffects = getExamEffects(ProduceExamEffect)
+
   const xSupportCards: XSupportCard[] = SupportCards.map(supportCard => {
-    const produceCards = filterItems(ProduceCards, "originSupportCardId", supportCard.id, { sortRules: ["upgradeCount", true] })
+    const produceCards =
+      filterItems(ProduceCards, "originSupportCardId", supportCard.id, { sortRules: ["upgradeCount", true] })
+        .map(x => getSingleXProduceCard(x, examEffects))
     const produceItems = filterItems(ProduceItems, "originSupportCardId", supportCard.id, { sortRules: ["evaluation", true] })
     const produceEvents: XSupportCard["produceEvents"] = filterItems(
       ProduceEventSupportCards, "supportCardId", supportCard.id, { sortRules: ["number", true] }

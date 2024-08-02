@@ -1,5 +1,6 @@
 import { Cidol, XIdolCard } from "~/types"
 import { filterItems } from "~/api/apiUtils"
+import { getExamEffects, getSingleXProduceCard } from "~/api/pcard"
 
 export function getXIdolCard([
   IdolCards,
@@ -18,10 +19,15 @@ export function getXIdolCard([
   ProduceExamBattleConfigs,
   ProduceExamBattleScoreConfig,
   ProduceExamGimmickEffectGroup,
+  ProduceExamEffect,
 ]: Cidol
 ): XIdolCard[] {
+  const examEffects = getExamEffects(ProduceExamEffect)
+
   const xIdolCards: XIdolCard[] = IdolCards.map(idolCard => {
-    const produceCards = filterItems(ProduceCards, "id", idolCard.produceCardId, { sortRules: ["upgradeCount", true] })
+    const produceCards =
+      filterItems(ProduceCards, "id", idolCard.produceCardId, { sortRules: ["upgradeCount", true] })
+        .map(x => getSingleXProduceCard(x, examEffects))
     const produceItems = filterItems(ProduceItems, "id", [idolCard.beforeProduceItemId, idolCard.afterProduceItemId], { sortRules: ["evaluation", true] })
     const idolCardSkins = filterItems(IdolCardSkins, "idolCardId", idolCard.id, { sortRules: ["order", false] })
 
