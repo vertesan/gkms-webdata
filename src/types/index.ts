@@ -29,6 +29,7 @@ import {
   IdolCardPotential,
   IdolCardPotentialProduceSkill,
   IdolCardSkin,
+  MemoryAbility,
   Produce,
   ProduceCard,
   ProduceDescription,
@@ -109,6 +110,8 @@ export type UsedDB = {
   ProduceExamGimmickEffectGroup: ProduceExamGimmickEffectGroup[]
   // produce card
   ProduceExamEffect: ProduceExamEffect[]
+  // memory
+  MemoryAbility: MemoryAbility
 }
 
 export type Master = [
@@ -261,6 +264,25 @@ export type XProduceCard = Omit<ProduceCard, 'playEffects'> & {
   playEffects: (UnArray<ProduceCard['playEffects']> & {
     produceExamEffect: Pick<ProduceExamEffect, 'id' | 'effectType' | 'effectValue1' | 'effectValue2' | 'effectCount' | 'effectTurn'>
   })[]
+}
+
+export type MemoryInspector = [
+  ProduceCard[],
+  ProduceExamEffect[],
+  ProduceItem[],
+  MemoryAbility[],
+  ProduceSkill[],
+  ProduceEffect[],
+]
+
+export type XMemoryInspector = {
+  produceCards: { [k: string]: XProduceCard },
+  produceItems: { [k: string]: ProduceItem },
+  memoryAbilities: {
+    [k: string]: MemoryAbility & {
+      skill: ProduceSkill & { produceEffects: ProduceEffect[] }
+    }
+  }
 }
 
 export function isNonNull<T extends unknown[]>(args: T): args is { [P in keyof T]: NonNullable<T[P]> } {
