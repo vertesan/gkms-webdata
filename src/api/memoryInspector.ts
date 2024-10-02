@@ -14,7 +14,7 @@ export function getXMemoryInspector([
   const xProduceCards = ProduceCard
     .filter(x => x.upgradeCount < 2)
     .reduce<XMemoryInspector['produceCards']>((acc, cur) => {
-      acc[cur.id] = getSingleXProduceCard(cur, examEffects)
+      acc[`${cur.id}-${cur.upgradeCount}`] = getSingleXProduceCard(cur, examEffects)
       return acc
     }, {})
 
