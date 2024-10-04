@@ -46,6 +46,7 @@ export async function getMaster(env: Env): Promise<Master | null> {
     "AchievementProgress",
     "EventLabel",
     "ProduceExamEffect",
+    "ResultGradePattern",
   ], env)
 }
 

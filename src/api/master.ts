@@ -1,7 +1,7 @@
 import { filterItems } from "~/api/apiUtils";
 import { getExamEffects, getSingleXProduceCard } from "~/api/pcard";
 import { Master, XMaster, XProduceCard } from "~/types";
-import { EventType, ProducePlanType } from "~/types/proto/penum";
+import { EventType, ProducePlanType, ResultGrade, ResultGradeType } from "~/types/proto/penum";
 
 export function getXMaster([
   Version,
@@ -29,6 +29,7 @@ export function getXMaster([
   AchievementProgress,
   EventLabel,
   ProduceExamEffect,
+  ResultGradePattern,
 ]: Master): XMaster {
 
   const characters = Characters.reduce<XMaster['characters']>((acc, cur) => {
@@ -150,6 +151,16 @@ export function getXMaster([
     return acc
   }, {})
 
+  const resultGradePatterns = ResultGradePattern
+    .filter(x => x.type === ResultGradeType.ProduceScore)
+    .map(x => {
+
+      return {
+        ...x,
+        description: ResultGrade[x.grade].replaceAll("Plus", "+").toUpperCase(),
+      }
+    })
+
   return {
     version: Version.version,
     characters,
@@ -166,5 +177,6 @@ export function getXMaster([
     characterDetails,
     achievements,
     eventLabels: EventLabel,
+    resultGradePatterns,
   }
 }

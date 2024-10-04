@@ -51,6 +51,7 @@ import {
   PvpRateCommonProduceCard,
   PvpRateConfig,
   PvpRateConfig_Stage,
+  ResultGradePattern,
   StoryEvent,
   SupportCard,
   SupportCardProduceSkillLevelAssist,
@@ -83,6 +84,7 @@ export type UsedDB = {
   Achievement: Achievement[],
   AchievementProgress: AchievementProgress[],
   EventLabel: EventLabel[],
+  ResultGradePattern: ResultGradePattern[],
   // csprt, cidol
   SupportCard: SupportCard[]
   ProduceCard: ProduceCard[]
@@ -140,6 +142,7 @@ export type Master = [
   AchievementProgress[],
   EventLabel[],
   ProduceExamEffect[],
+  ResultGradePattern[],
 ]
 
 export type XMaster = {
@@ -177,7 +180,8 @@ export type XMaster = {
     }
   },
   characterDetails: { [id: string]: CharacterDetail[] },
-  achievements: { [id: string]: Achievement & { progress: AchievementProgress[] } }
+  achievements: { [id: string]: Achievement & { progress: AchievementProgress[] } },
+  resultGradePatterns: XResultGradePattern[],
 }
 
 export type Csprt = [
@@ -283,6 +287,10 @@ export type XMemoryInspector = {
       skill: ProduceSkill & { produceEffects: ProduceEffect[] }
     }
   }
+}
+
+export type XResultGradePattern = ResultGradePattern & {
+  description: string,
 }
 
 export function isNonNull<T extends unknown[]>(args: T): args is { [P in keyof T]: NonNullable<T[P]> } {
