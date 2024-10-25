@@ -2,6 +2,7 @@ import { filterItems } from "~/api/apiUtils";
 import { getExamEffects, getSingleXProduceCard } from "~/api/pcard";
 import { Master, XMaster, XProduceCard } from "~/types";
 import { EventType, ProducePlanType, ResultGrade, ResultGradeType } from "~/types/proto/penum";
+import { ProduceItem } from "~/types/proto/pmaster";
 
 export function getXMaster([
   Version,
@@ -111,14 +112,20 @@ export function getXMaster([
       }).map(x => getSingleXProduceCard(x, examEffects))
       commonProduceCards[pvpCommonCard.planType] = cards
     })
-    const stages = pvpRateConfigRaw.stages.map(stage => {
-      const produceItem = ProduceItem.find(x => x.id === stage.produceItemId)
+    const stages: NonNullable<XMaster['pvp']>['pvpRateConfig']['stages'] = pvpRateConfigRaw.stages.map(stage => {
+      const produceItems: ProduceItem[] = []
+      stage.produceItemIds.forEach(iid => {
+        const pItem = ProduceItem.find(x => x.id === iid)
+        if (pItem) produceItems.push(pItem)
+      })
+      ProduceItem.find(x => x.id === stage.produceItemId)
+
       const examGimmicks = stage.produceExamGimmickEffectGroupId
         ? filterItems(ProduceExamGimmickEffectGroup, "id", stage.produceExamGimmickEffectGroupId, { sortRules: ["startTurn", true] })
         : undefined
       return {
         ...stage,
-        produceItem,
+        produceItems,
         examGimmicks,
       }
     })
