@@ -22,6 +22,7 @@ import {
   EventLabel,
   ExamInitialDeck,
   ExamSetting,
+  GuildReaction,
   IdolCard,
   IdolCardLevelLimit,
   IdolCardLevelLimitProduceSkill,
@@ -114,6 +115,7 @@ export type UsedDB = {
   ProduceExamEffect: ProduceExamEffect[]
   // memory
   MemoryAbility: MemoryAbility
+  GuildReaction: GuildReaction[]
 }
 
 export type Master = [
@@ -143,6 +145,7 @@ export type Master = [
   EventLabel[],
   ProduceExamEffect[],
   ResultGradePattern[],
+  GuildReaction[],
 ]
 
 export type XMaster = {
@@ -182,6 +185,7 @@ export type XMaster = {
   characterDetails: { [id: string]: CharacterDetail[] },
   achievements: { [id: string]: Achievement & { progress: AchievementProgress[] } },
   resultGradePatterns: XResultGradePattern[],
+  guildReactions: GuildReaction[],
 }
 
 export type Csprt = [

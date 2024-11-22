@@ -31,6 +31,7 @@ export function getXMaster([
   EventLabel,
   ProduceExamEffect,
   ResultGradePattern,
+  GuildReaction,
 ]: Master): XMaster {
 
   const characters = Characters.reduce<XMaster['characters']>((acc, cur) => {
@@ -185,5 +186,6 @@ export function getXMaster([
     achievements,
     eventLabels: EventLabel,
     resultGradePatterns,
+    guildReactions: GuildReaction,
   }
 }
