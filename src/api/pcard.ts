@@ -6,6 +6,7 @@ export function getExamEffects(
   produceExamEffects: ProduceExamEffect[]
 ) {
   const examEffects = produceExamEffects.reduce((acc, cur) => {
+    cur.descriptions = []
     acc[cur.id] = cur
     return acc
   }, {} as { [x: string]: UnArray<ProduceExamEffect> })
@@ -18,6 +19,7 @@ export function getSingleXProduceCard(
     [x: string]: ProduceExamEffect;
   },
 ): XProduceCard {
+  produceCard.descriptions = []
   return {
     ...produceCard,
     playEffects: produceCard.playEffects.map(playEffect => {
