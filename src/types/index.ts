@@ -11,7 +11,9 @@ import {
   ProduceEffectType,
   ProduceExamEffectType,
   ProducePhaseType,
-  ProducePlanType
+  ProducePlanType,
+  ProduceStepType,
+  ProduceType
 } from "~/types/proto/penum"
 import {
   Achievement,
@@ -44,6 +46,7 @@ import {
   ProduceExamBattleScoreConfig,
   ProduceExamEffect,
   ProduceExamGimmickEffectGroup,
+  ProduceGroup,
   ProduceItem,
   ProduceSkill,
   ProduceStepAuditionDifficulty,
@@ -73,6 +76,7 @@ export type UsedDB = {
   ProduceDescription: ProduceDescription[]
   ProduceEffectIcon: ProduceEffectIcon[]
   Produce: Produce[]
+  ProduceGroup: ProduceGroup[]
   ExamInitialDeck: ExamInitialDeck[]
   ProduceDescriptionProduceEffectType: ProduceDescriptionProduceEffectType[]
   ProduceDescriptionProduceExamEffectType: ProduceDescriptionProduceExamEffectType[]
@@ -237,6 +241,8 @@ export type Cidol = [
   ProduceExamBattleScoreConfig[],
   ProduceExamGimmickEffectGroup[],
   ProduceExamEffect[],
+  ProduceGroup[],
+  Produce[],
 ]
 
 export type XIdolCard = IdolCard & {
@@ -248,19 +254,30 @@ export type XIdolCard = IdolCard & {
     Omit<IdolCardLevelLimitStatusUp, 'id' | 'rank'> &
     { limitProduceSkill?: IdolCardLevelLimitProduceSkill } &
     { produceSkill?: ProduceSkill & { produceEffects: ProduceEffect[] } }
-  )[]
+  )[],
   potentials: (
     IdolCardPotential &
     { potentialProduceSkill?: IdolCardPotentialProduceSkill } &
     { produceSkill?: ProduceSkill & { produceEffects: ProduceEffect[] } }
-  )[]
+  )[],
   auditionDifficulty: (
     ProduceStepAuditionDifficulty &
     { npcs: ProduceExamBattleNpcGroup[] } &
     { examBattleConfig: ProduceExamBattleConfig } &
     { examBattleScoreConfigs: ProduceExamBattleScoreConfig[] } &
     { examGimmicks?: ProduceExamGimmickEffectGroup[] }
-  )[]
+  )[],
+  auditionScenarios: {
+    [scenario in ProduceType]: {
+      [stepType in ProduceStepType]: (
+        ProduceStepAuditionDifficulty &
+        { npcs: ProduceExamBattleNpcGroup[] } &
+        { examBattleConfig: ProduceExamBattleConfig } &
+        { examBattleScoreConfigs: ProduceExamBattleScoreConfig[] } &
+        { examGimmicks?: ProduceExamGimmickEffectGroup[] }
+      )[]
+    }
+  },
 }
 
 export type PCard = [

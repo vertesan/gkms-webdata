@@ -88,6 +88,8 @@ export async function getCidol(env: Env): Promise<Cidol | null> {
     "ProduceExamBattleScoreConfig",
     "ProduceExamGimmickEffectGroup",
     "ProduceExamEffect",
+    "ProduceGroup",
+    "Produce",
   ], env)
 }
 

@@ -1,6 +1,7 @@
 import { Cidol, XIdolCard } from "~/types"
 import { filterItems } from "~/api/apiUtils"
 import { getExamEffects, getSingleXProduceCard } from "~/api/pcard"
+import { Produce, ProduceGroup } from "~/types/proto/pmaster"
 
 export function getXIdolCard([
   IdolCards,
@@ -20,9 +21,20 @@ export function getXIdolCard([
   ProduceExamBattleScoreConfig,
   ProduceExamGimmickEffectGroup,
   ProduceExamEffect,
+  ProduceGroup,
+  Produce,
 ]: Cidol
 ): XIdolCard[] {
   const examEffects = getExamEffects(ProduceExamEffect)
+  const produceIdMap = Produce.reduce((acc, cur) => {
+    const group = ProduceGroup.find(x => x.produceIds.includes(cur.id))
+    if (!group) return acc
+    acc[cur.id] = {
+      produce: cur,
+      group: group,
+    }
+    return acc
+  }, {} as { [id: string]: { produce: Produce, group: ProduceGroup } })
 
   const xIdolCards: XIdolCard[] = IdolCards.map(idolCard => {
     const produceCards =
@@ -94,6 +106,36 @@ export function getXIdolCard([
       }
     })
 
+    const auditionDifficulties = filterItems(
+      ProduceStepAuditionDifficultys, "id", idolCard.produceStepAuditionDifficultyId
+    )
+
+    const auditionScenarios = auditionDifficulties.reduce((accDifficulty, curDifficulty) => {
+      const groupType = produceIdMap[curDifficulty.produceId].group.type
+      const scenario = accDifficulty[groupType] || {}
+
+      const npcs = filterItems(ProduceExamBattleNpcGroups, "id", curDifficulty.produceExamBattleNpcGroupId, { sortRules: ["number", true] })
+      const examBattleConfig = ProduceExamBattleConfigs.find(config => config.id === curDifficulty.produceExamBattleConfigId)!
+      const examBattleScoreConfigs = filterItems(ProduceExamBattleScoreConfig, "id", examBattleConfig.produceExamBattleScoreConfigId, { sortRules: ["parameter", true] })
+      const examGimmicks = curDifficulty.produceExamGimmickEffectGroupId
+        ? filterItems(ProduceExamGimmickEffectGroup, "id", curDifficulty.produceExamGimmickEffectGroupId, { sortRules: ["startTurn", true] })
+        : undefined
+      const xDifficulty = {
+        ...curDifficulty,
+        npcs,
+        examBattleConfig,
+        examBattleScoreConfigs,
+        examGimmicks,
+      }
+      if (!scenario[curDifficulty.stepType]) {
+        scenario[curDifficulty.stepType] = []
+      }
+      scenario[curDifficulty.stepType].unshift(xDifficulty)
+      accDifficulty[groupType] = scenario
+      return accDifficulty
+    }, {} as XIdolCard['auditionScenarios'])
+
+
     const auditionDifficulty = filterItems(
       ProduceStepAuditionDifficultys, "id", idolCard.produceStepAuditionDifficultyId
     ).map(difficulty => {
@@ -120,6 +162,7 @@ export function getXIdolCard([
       levelLimits,
       potentials,
       auditionDifficulty,
+      auditionScenarios,
     }
   })
   return xIdolCards
