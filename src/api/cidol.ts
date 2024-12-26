@@ -135,25 +135,6 @@ export function getXIdolCard([
       return accDifficulty
     }, {} as XIdolCard['auditionScenarios'])
 
-
-    const auditionDifficulty = filterItems(
-      ProduceStepAuditionDifficultys, "id", idolCard.produceStepAuditionDifficultyId
-    ).map(difficulty => {
-      const npcs = filterItems(ProduceExamBattleNpcGroups, "id", difficulty.produceExamBattleNpcGroupId, { sortRules: ["number", true] })
-      const examBattleConfig = ProduceExamBattleConfigs.find(config => config.id === difficulty.produceExamBattleConfigId)!
-      const examBattleScoreConfigs = filterItems(ProduceExamBattleScoreConfig, "id", examBattleConfig.produceExamBattleScoreConfigId, { sortRules: ["parameter", true] })
-      const examGimmicks = difficulty.produceExamGimmickEffectGroupId
-        ? filterItems(ProduceExamGimmickEffectGroup, "id", difficulty.produceExamGimmickEffectGroupId, { sortRules: ["startTurn", true] })
-        : undefined
-      return {
-        ...difficulty,
-        npcs,
-        examBattleConfig,
-        examBattleScoreConfigs,
-        examGimmicks,
-      }
-    })
-
     return {
       ...idolCard,
       produceCards,
@@ -161,7 +142,6 @@ export function getXIdolCard([
       idolCardSkins,
       levelLimits,
       potentials,
-      auditionDifficulty,
       auditionScenarios,
     }
   })

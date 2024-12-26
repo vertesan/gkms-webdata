@@ -260,13 +260,6 @@ export type XIdolCard = IdolCard & {
     { potentialProduceSkill?: IdolCardPotentialProduceSkill } &
     { produceSkill?: ProduceSkill & { produceEffects: ProduceEffect[] } }
   )[],
-  auditionDifficulty: (
-    ProduceStepAuditionDifficulty &
-    { npcs: ProduceExamBattleNpcGroup[] } &
-    { examBattleConfig: ProduceExamBattleConfig } &
-    { examBattleScoreConfigs: ProduceExamBattleScoreConfig[] } &
-    { examGimmicks?: ProduceExamGimmickEffectGroup[] }
-  )[],
   auditionScenarios: {
     [scenario in ProduceType]: {
       [stepType in ProduceStepType]: (
