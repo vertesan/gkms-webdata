@@ -35,7 +35,12 @@ import {
   MemoryAbility,
   Produce,
   ProduceCard,
+  ProduceCardCustomize,
+  ProduceCardCustomizeRarityEvaluation,
+  ProduceCardGrowEffect,
   ProduceDescription,
+  ProduceDescriptionLabel,
+  ProduceDescriptionProduceCardGrowEffect,
   ProduceDescriptionProduceEffectType,
   ProduceDescriptionProduceExamEffectType,
   ProduceEffect,
@@ -73,7 +78,7 @@ export type UsedDB = {
   // master
   Version: { version: string }
   Character: Character[]
-  ProduceDescription: ProduceDescription[]
+  ProduceDescriptionLabel: ProduceDescriptionLabel[]
   ProduceEffectIcon: ProduceEffectIcon[]
   Produce: Produce[]
   ProduceGroup: ProduceGroup[]
@@ -117,6 +122,10 @@ export type UsedDB = {
   ProduceExamGimmickEffectGroup: ProduceExamGimmickEffectGroup[]
   // produce card
   ProduceExamEffect: ProduceExamEffect[]
+  ProduceCardCustomize: ProduceCardCustomize[]
+  ProduceCardCustomizeRarityEvaluation: ProduceCardCustomizeRarityEvaluation[]
+  ProduceCardGrowEffect: ProduceCardGrowEffect[]
+  ProduceDescriptionProduceCardGrowEffect: ProduceDescriptionProduceCardGrowEffect[]
   // memory
   MemoryAbility: MemoryAbility
   GuildReaction: GuildReaction[]
@@ -125,7 +134,6 @@ export type UsedDB = {
 export type Master = [
   { version: string },
   Character[],
-  ProduceDescription[],
   ProduceEffectIcon[],
   Produce[],
   ExamInitialDeck[],
@@ -150,12 +158,12 @@ export type Master = [
   ProduceExamEffect[],
   ResultGradePattern[],
   GuildReaction[],
+  ProduceDescriptionLabel[],
 ]
 
 export type XMaster = {
   version: string,
   characters: { [id: string]: Character },
-  produceDescriptions: { [id: string]: ProduceDescription },
   produceEffectIcons: { [type in ProduceEffectType]: ProduceEffectIcon },
   produces: { [id: string]: Produce },
   examInitialDecks: { [id: string]: ExamInitialDeck },
@@ -190,6 +198,7 @@ export type XMaster = {
   achievements: { [id: string]: Achievement & { progress: AchievementProgress[] } },
   resultGradePatterns: XResultGradePattern[],
   guildReactions: GuildReaction[],
+  produceDescriptionLabels: { [id: string]: ProduceDescriptionLabel },
 }
 
 export type Csprt = [
@@ -276,12 +285,26 @@ export type XIdolCard = IdolCard & {
 export type PCard = [
   ProduceCard[],
   ProduceExamEffect[],
+  ProduceCardCustomize[],
+  ProduceCardCustomizeRarityEvaluation[],
+  ProduceCardGrowEffect[],
+  ProduceDescriptionProduceCardGrowEffect[],
 ]
 
 export type XProduceCard = Omit<ProduceCard, 'playEffects'> & {
   playEffects: (UnArray<ProduceCard['playEffects']> & {
     produceExamEffect: Pick<ProduceExamEffect, 'id' | 'effectType' | 'effectValue1' | 'effectValue2' | 'effectCount' | 'effectTurn'>
-  })[]
+  })[],
+}
+
+export type XCustProduceCard = XProduceCard & {
+  customizeEvaluation: number,
+  customizeEffects: (ProduceCardCustomize & {
+    growEffects: (ProduceCardGrowEffect & {
+      examEffect?: ProduceExamEffect
+      growEffectDescription: ProduceDescriptionProduceCardGrowEffect
+    })[]
+  })[][]
 }
 
 export type MemoryInspector = [

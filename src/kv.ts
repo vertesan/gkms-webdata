@@ -16,6 +16,10 @@ export async function getPCard(env: Env): Promise<PCard | null> {
   return await getAllJson([
     "ProduceCard",
     "ProduceExamEffect",
+    "ProduceCardCustomize",
+    "ProduceCardCustomizeRarityEvaluation",
+    "ProduceCardGrowEffect",
+    "ProduceDescriptionProduceCardGrowEffect",
   ], env)
 }
 
@@ -23,7 +27,6 @@ export async function getMaster(env: Env): Promise<Master | null> {
   return await getAllJson([
     "Version",
     "Character",
-    "ProduceDescription",
     "ProduceEffectIcon",
     "Produce",
     "ExamInitialDeck",
@@ -48,6 +51,7 @@ export async function getMaster(env: Env): Promise<Master | null> {
     "ProduceExamEffect",
     "ResultGradePattern",
     "GuildReaction",
+    "ProduceDescriptionLabel",
   ], env)
 }
 

@@ -7,7 +7,6 @@ import { ProduceItem } from "~/types/proto/pmaster";
 export function getXMaster([
   Version,
   Characters,
-  ProduceDescriptions,
   ProduceEffectIcons,
   Produces,
   ExamInitialDecks,
@@ -32,6 +31,7 @@ export function getXMaster([
   ProduceExamEffect,
   ResultGradePattern,
   GuildReaction,
+  ProduceDescriptionsLabel,
 ]: Master): XMaster {
 
   const characters = Characters.reduce<XMaster['characters']>((acc, cur) => {
@@ -39,7 +39,7 @@ export function getXMaster([
     return acc
   }, {})
 
-  const produceDescriptions = ProduceDescriptions.reduce<XMaster['produceDescriptions']>((acc, cur) => {
+  const produceDescriptionLabels = ProduceDescriptionsLabel.reduce<XMaster['produceDescriptionLabels']>((acc, cur) => {
     acc[cur.id] = cur
     return acc
   }, {})
@@ -172,7 +172,6 @@ export function getXMaster([
   return {
     version: Version.version,
     characters,
-    produceDescriptions,
     produceEffectIcons,
     produces,
     examInitialDecks,
@@ -187,5 +186,6 @@ export function getXMaster([
     eventLabels: EventLabel,
     resultGradePatterns,
     guildReactions: GuildReaction,
+    produceDescriptionLabels,
   }
 }

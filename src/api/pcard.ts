@@ -1,6 +1,7 @@
-import { PCard, XProduceCard } from "~/types";
-import { ProduceCard, ProduceExamEffect } from "~/types/proto/pmaster";
+import { PCard, XCustProduceCard, XProduceCard } from "~/types";
+import { ProduceCard, ProduceDescriptionProduceCardGrowEffect, ProduceExamEffect } from "~/types/proto/pmaster";
 import { UnArray } from "~/types/utils";
+import { filterItems } from "./apiUtils";
 
 export function getExamEffects(
   produceExamEffects: ProduceExamEffect[]
@@ -42,15 +43,50 @@ export function getSingleXProduceCard(
 export function getXProduceCard([
   ProduceCard,
   ProduceExamEffect,
-]: PCard): XProduceCard[] {
+  ProduceCardCustomize,
+  ProduceCardCustomizeRarityEvaluations,
+  ProduceCardGrowEffect,
+  ProduceDescriptionProduceCardGrowEffects,
+]: PCard): XCustProduceCard[] {
 
   const examEffects = getExamEffects(ProduceExamEffect)
+  const produceDescriptionProduceCardGrowEffects = ProduceDescriptionProduceCardGrowEffects.reduce((acc, cur) => {
+    acc[cur.type] = cur
+    return acc
+  }, {} as { [id: number]: ProduceDescriptionProduceCardGrowEffect })
+  const produceCardCustomizeRarityEvaluations = ProduceCardCustomizeRarityEvaluations.reduce((acc, cur) => {
+    acc[cur.rarity] = cur.evaluation
+    return acc
+  }, {} as { [id: number]: number })
 
-  const xProduceCards = ProduceCard
+  const xCustProduceCards = ProduceCard
     .filter(x => x.upgradeCount < 2)
     .map(card => {
-      return getSingleXProduceCard(card, examEffects)
+      return {
+        ...getSingleXProduceCard(card, examEffects),
+        customizeEvaluation: produceCardCustomizeRarityEvaluations[card.rarity],
+        customizeEffects: card.produceCardCustomizeIds.map(customizeId => {
+          const produceCardCustomizes = filterItems(ProduceCardCustomize, "id", customizeId)
+          const customizeEffects = produceCardCustomizes.map(produceCardCustomize => {
+            const rawGrowEffects = filterItems(ProduceCardGrowEffect, "id", produceCardCustomize.produceCardGrowEffectIds)
+            const growEffects = rawGrowEffects.map(growEffect => {
+              const examEffect = growEffect.playProduceExamEffectId ? examEffects[growEffect.playProduceExamEffectId] : undefined
+              const growEffectDescription = produceDescriptionProduceCardGrowEffects[growEffect.effectType]
+              return {
+                ...growEffect,
+                examEffect,
+                growEffectDescription,
+              }
+            })
+            return {
+              ...produceCardCustomize,
+              growEffects,
+            }
+          })
+          return customizeEffects
+        })
+      }
     })
 
-  return xProduceCards
+  return xCustProduceCards
 }
