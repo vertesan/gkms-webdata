@@ -20,6 +20,7 @@ export async function getPCard(env: Env): Promise<PCard | null> {
     "ProduceCardCustomizeRarityEvaluation",
     "ProduceCardGrowEffect",
     "ProduceDescriptionProduceCardGrowEffect",
+    "ProduceCardStatusEnchant",
   ], env)
 }
 
@@ -74,6 +75,7 @@ export async function getCsprt(env: Env): Promise<Csprt | null> {
     "ProduceCardCustomizeRarityEvaluation",
     "ProduceCardGrowEffect",
     "ProduceDescriptionProduceCardGrowEffect",
+    "ProduceCardStatusEnchant",
   ], env)
 }
 

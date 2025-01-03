@@ -1,5 +1,5 @@
 import { PCard, XCustProduceCard, XProduceCard } from "~/types";
-import { ProduceCard, ProduceCardCustomize, ProduceCardCustomizeRarityEvaluation, ProduceCardGrowEffect, ProduceDescriptionProduceCardGrowEffect, ProduceExamEffect } from "~/types/proto/pmaster";
+import { ProduceCard, ProduceCardCustomize, ProduceCardCustomizeRarityEvaluation, ProduceCardGrowEffect, ProduceCardStatusEnchant, ProduceDescriptionProduceCardGrowEffect, ProduceExamEffect } from "~/types/proto/pmaster";
 import { UnArray } from "~/types/utils";
 import { filterItems } from "./apiUtils";
 
@@ -74,6 +74,7 @@ export function getSingleXCustProduceCard(
   },
   cardCustomizesDB: ProduceCardCustomize[],
   cardGrowEffectsDB: ProduceCardGrowEffect[],
+  cardStatusEnchantDB: ProduceCardStatusEnchant[],
 ): XCustProduceCard {
   return {
     ...getSingleXProduceCard(produceCard, examEffects),
@@ -85,10 +86,15 @@ export function getSingleXCustProduceCard(
         const growEffects = rawGrowEffects.map(growEffect => {
           const examEffect = growEffect.playProduceExamEffectId ? examEffects[growEffect.playProduceExamEffectId] : undefined
           const growEffectDescription = cardGrowEffects[growEffect.effectType]
+          let produceCardStatusEnchant = undefined
+          if (growEffect.produceCardStatusEnchantId) {
+            produceCardStatusEnchant = cardStatusEnchantDB.find(x => x.id === growEffect.produceCardStatusEnchantId)
+          }
           return {
             ...growEffect,
             examEffect,
             growEffectDescription,
+            produceCardStatusEnchant,
           }
         })
         return {
@@ -108,6 +114,7 @@ export function getXCustProduceCards([
   ProduceCardCustomizeRarityEvaluations,
   ProduceCardGrowEffect,
   ProduceDescriptionProduceCardGrowEffects,
+  ProduceCardStatusEnchant,
 ]: PCard): XCustProduceCard[] {
 
   const examEffects = getExamEffects(ProduceExamEffect)
@@ -124,6 +131,7 @@ export function getXCustProduceCards([
         produceCardCustomizeRarityEvaluations,
         ProduceCardCustomize,
         ProduceCardGrowEffect,
+        ProduceCardStatusEnchant,
       )
     })
 

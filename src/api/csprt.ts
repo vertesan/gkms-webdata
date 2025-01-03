@@ -29,6 +29,7 @@ export function getXSupportCard([
   ProduceCardCustomizeRarityEvaluation,
   ProduceCardGrowEffect,
   ProduceDescriptionProduceCardGrowEffect,
+  ProduceCardStatusEnchant,
 ]: Csprt
 ): XSupportCard[] {
   const supportCardProduceSkillLevels = [
@@ -52,7 +53,8 @@ export function getXSupportCard([
         cardGrowEffects,
         customizeRarityEvaluations,
         ProduceCardCustomize,
-        ProduceCardGrowEffect
+        ProduceCardGrowEffect,
+        ProduceCardStatusEnchant,
       ))
     const produceItems = filterItems(ProduceItems, "originSupportCardId", supportCard.id, { sortRules: ["evaluation", true] })
     const produceEvents: XSupportCard["produceEvents"] = filterItems(

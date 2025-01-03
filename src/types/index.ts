@@ -38,6 +38,7 @@ import {
   ProduceCardCustomize,
   ProduceCardCustomizeRarityEvaluation,
   ProduceCardGrowEffect,
+  ProduceCardStatusEnchant,
   ProduceDescription,
   ProduceDescriptionLabel,
   ProduceDescriptionProduceCardGrowEffect,
@@ -126,6 +127,7 @@ export type UsedDB = {
   ProduceCardCustomizeRarityEvaluation: ProduceCardCustomizeRarityEvaluation[]
   ProduceCardGrowEffect: ProduceCardGrowEffect[]
   ProduceDescriptionProduceCardGrowEffect: ProduceDescriptionProduceCardGrowEffect[]
+  ProduceCardStatusEnchant: ProduceCardStatusEnchant[]
   // memory
   MemoryAbility: MemoryAbility
   GuildReaction: GuildReaction[]
@@ -219,6 +221,7 @@ export type Csprt = [
   ProduceCardCustomizeRarityEvaluation[],
   ProduceCardGrowEffect[],
   ProduceDescriptionProduceCardGrowEffect[],
+  ProduceCardStatusEnchant[],
 ]
 
 export type XSupportCard = SupportCard & {
@@ -293,6 +296,7 @@ export type PCard = [
   ProduceCardCustomizeRarityEvaluation[],
   ProduceCardGrowEffect[],
   ProduceDescriptionProduceCardGrowEffect[],
+  ProduceCardStatusEnchant[],
 ]
 
 export type XProduceCard = Omit<ProduceCard, 'playEffects'> & {
@@ -307,6 +311,7 @@ export type XCustProduceCard = XProduceCard & {
     growEffects: (ProduceCardGrowEffect & {
       examEffect?: ProduceExamEffect
       growEffectDescription: ProduceDescriptionProduceCardGrowEffect
+      produceCardStatusEnchant?: ProduceCardStatusEnchant
     })[]
   })[][]
 }
