@@ -2,7 +2,7 @@ import { getCidol, getCsprt, getMaster, getMemoryInspector, getPCard } from "~/k
 import { getXMaster } from "~/api/master"
 import { getXSupportCard } from "~/api/csprt"
 import { getXIdolCard } from "./api/cidol"
-import { getXProduceCard } from "./api/pcard"
+import { getXCustProduceCards } from "./api/pcard"
 import { getXMemoryInspector } from "./api/memoryInspector"
 
 export enum ApiTypes {
@@ -64,7 +64,7 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
     case ApiTypes.pcard:
       const pcard = await getPCard(env)
       if (pcard) {
-        const xPCards = getXProduceCard(pcard)
+        const xPCards = getXCustProduceCards(pcard)
         return new Response(JSON.stringify(xPCards), {
           headers: {
             ...headers,

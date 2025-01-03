@@ -9,7 +9,7 @@ import {
   SupportCardProduceSkillLevelAssist
 } from "~/types/proto/pmaster";
 import { filterItems } from "~/api/apiUtils";
-import { getExamEffects, getSingleXProduceCard } from "~/api/pcard";
+import { getCardGrowEffects, getCustomizeRarityEvaluations, getExamEffects, getSingleXCustProduceCard, getSingleXProduceCard } from "~/api/pcard";
 
 export function getXSupportCard([
   SupportCards,
@@ -25,6 +25,10 @@ export function getXSupportCard([
   ProduceSkills,
   ProduceTriggers,
   ProduceExamEffect,
+  ProduceCardCustomize,
+  ProduceCardCustomizeRarityEvaluation,
+  ProduceCardGrowEffect,
+  ProduceDescriptionProduceCardGrowEffect,
 ]: Csprt
 ): XSupportCard[] {
   const supportCardProduceSkillLevels = [
@@ -34,11 +38,22 @@ export function getXSupportCard([
     ...SupportCardProduceSkillLevelVocals,
   ]
   const examEffects = getExamEffects(ProduceExamEffect)
+  const cardGrowEffects = getCardGrowEffects(ProduceDescriptionProduceCardGrowEffect)
+  const customizeRarityEvaluations = getCustomizeRarityEvaluations(ProduceCardCustomizeRarityEvaluation)
 
   const xSupportCards: XSupportCard[] = SupportCards.map(supportCard => {
     const produceCards =
-      filterItems(ProduceCards, "originSupportCardId", supportCard.id, { sortRules: ["upgradeCount", true] })
-        .map(x => getSingleXProduceCard(x, examEffects))
+      filterItems(ProduceCards, "originSupportCardId", supportCard.id, {
+        sortRules: ["upgradeCount", true],
+        limitRules: ["upgradeCount", 1],
+      }).map(x => getSingleXCustProduceCard(
+        x,
+        examEffects,
+        cardGrowEffects,
+        customizeRarityEvaluations,
+        ProduceCardCustomize,
+        ProduceCardGrowEffect
+      ))
     const produceItems = filterItems(ProduceItems, "originSupportCardId", supportCard.id, { sortRules: ["evaluation", true] })
     const produceEvents: XSupportCard["produceEvents"] = filterItems(
       ProduceEventSupportCards, "supportCardId", supportCard.id, { sortRules: ["number", true] }

@@ -215,10 +215,14 @@ export type Csprt = [
   ProduceSkill[],
   ProduceTrigger[],
   ProduceExamEffect[],
+  ProduceCardCustomize[],
+  ProduceCardCustomizeRarityEvaluation[],
+  ProduceCardGrowEffect[],
+  ProduceDescriptionProduceCardGrowEffect[],
 ]
 
 export type XSupportCard = SupportCard & {
-  produceCards: XProduceCard[],
+  produceCards: XCustProduceCard[],
   produceItems: ProduceItem[],
   produceEvents: (
     ProduceEventSupportCard &

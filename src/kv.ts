@@ -70,6 +70,10 @@ export async function getCsprt(env: Env): Promise<Csprt | null> {
     "ProduceSkill",
     "ProduceTrigger",
     "ProduceExamEffect",
+    "ProduceCardCustomize",
+    "ProduceCardCustomizeRarityEvaluation",
+    "ProduceCardGrowEffect",
+    "ProduceDescriptionProduceCardGrowEffect",
   ], env)
 }
 
