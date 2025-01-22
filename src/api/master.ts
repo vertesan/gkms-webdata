@@ -10,8 +10,8 @@ export function getXMaster([
   ProduceEffectIcons,
   Produces,
   ExamInitialDecks,
-  ProduceDescriptionProduceEffectTypes,
-  ProduceDescriptionProduceExamEffectTypes,
+  ProduceDescriptionProduceEffects,
+  ProduceDescriptionExamEffects,
   CharacterTrueEndBonus,
   HomeEnterResponse,
   NoticeListAllResponse,
@@ -59,12 +59,12 @@ export function getXMaster([
     return acc
   }, {})
 
-  const produceDescriptionEffectTypes = ProduceDescriptionProduceEffectTypes.reduce<XMaster['produceDescriptionEffectTypes']>((acc, cur) => {
+  const produceDescriptionEffectTypes = ProduceDescriptionProduceEffects.reduce<XMaster['produceDescriptionEffectTypes']>((acc, cur) => {
     acc[cur.type] = cur
     return acc
   }, {} as XMaster['produceDescriptionEffectTypes'])
 
-  const produceDescriptionExamEffectType = ProduceDescriptionProduceExamEffectTypes.reduce<XMaster['produceDescriptionExamEffectType']>((acc, cur) => {
+  const produceDescriptionExamEffectType = ProduceDescriptionExamEffects.reduce<XMaster['produceDescriptionExamEffectType']>((acc, cur) => {
     acc[cur.type] = cur
     return acc
   }, {} as XMaster['produceDescriptionExamEffectType'])

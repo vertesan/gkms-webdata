@@ -39,11 +39,10 @@ import {
   ProduceCardCustomizeRarityEvaluation,
   ProduceCardGrowEffect,
   ProduceCardStatusEnchant,
-  ProduceDescription,
+  ProduceDescriptionExamEffect,
   ProduceDescriptionLabel,
   ProduceDescriptionProduceCardGrowEffect,
-  ProduceDescriptionProduceEffectType,
-  ProduceDescriptionProduceExamEffectType,
+  ProduceDescriptionProduceEffect,
   ProduceEffect,
   ProduceEffectIcon,
   ProduceEventSupportCard,
@@ -84,8 +83,8 @@ export type UsedDB = {
   Produce: Produce[]
   ProduceGroup: ProduceGroup[]
   ExamInitialDeck: ExamInitialDeck[]
-  ProduceDescriptionProduceEffectType: ProduceDescriptionProduceEffectType[]
-  ProduceDescriptionProduceExamEffectType: ProduceDescriptionProduceExamEffectType[]
+  ProduceDescriptionProduceEffect: ProduceDescriptionProduceEffect[]
+  ProduceDescriptionExamEffect: ProduceDescriptionExamEffect[]
   PvpRateCommonProduceCard: PvpRateCommonProduceCard[]
   CharacterTrueEndBonus: CharacterTrueEndBonus[]
   PvpRateConfig: PvpRateConfig[],
@@ -139,8 +138,8 @@ export type Master = [
   ProduceEffectIcon[],
   Produce[],
   ExamInitialDeck[],
-  ProduceDescriptionProduceEffectType[],
-  ProduceDescriptionProduceExamEffectType[],
+  ProduceDescriptionProduceEffect[],
+  ProduceDescriptionExamEffect[],
   CharacterTrueEndBonus[],
   HomeEnterResponse,
   NoticeListAllResponse,
@@ -169,8 +168,8 @@ export type XMaster = {
   produceEffectIcons: { [type in ProduceEffectType]: ProduceEffectIcon },
   produces: { [id: string]: Produce },
   examInitialDecks: { [id: string]: ExamInitialDeck },
-  produceDescriptionEffectTypes: { [type in ProduceEffectType]: ProduceDescriptionProduceEffectType },
-  produceDescriptionExamEffectType: { [type in ProduceExamEffectType]: ProduceDescriptionProduceExamEffectType },
+  produceDescriptionEffectTypes: { [type in ProduceEffectType]: ProduceDescriptionProduceEffect },
+  produceDescriptionExamEffectType: { [type in ProduceExamEffectType]: ProduceDescriptionExamEffect },
   characterTrueEndBonus: { [id: string]: CharacterTrueEndBonus },
   noticeList: {
     infoList: NoticeInfo[]
