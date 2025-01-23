@@ -55,7 +55,10 @@ export function getXIdolCard([
         limitPSkill.id === idolCard.idolCardLevelLimitProduceSkillId
       )
       const produceSkill = limitProduceSkill
-        ? ProduceSkills.find(skills => skills.id === limitProduceSkill.produceSkillId)
+        ? ProduceSkills.find(skills =>
+          skills.id === limitProduceSkill.produceSkillId &&
+          skills.level === limitProduceSkill.produceSkillLevel
+        )
         : undefined
       let produceSkillWithEffects
       if (produceSkill) {
@@ -85,7 +88,10 @@ export function getXIdolCard([
         pSkill.id === idolCard.idolCardPotentialProduceSkillId
       )
       const produceSkill = potentialProduceSkill
-        ? ProduceSkills.find(skills => skills.id === potentialProduceSkill.produceSkillId)
+        ? ProduceSkills.find(skills =>
+          skills.id === potentialProduceSkill.produceSkillId &&
+          skills.level === potentialProduceSkill.produceSkillLevel
+        )
         : undefined
       let produceSkillWithEffects
       if (produceSkill) {
