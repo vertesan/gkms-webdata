@@ -74,6 +74,14 @@ export function getXMaster([
     return acc
   }, {})
 
+  const characterTrueEndBonuses = CharacterTrueEndBonus.reduce<XMaster['characterTrueEndBonuses']>((acc, cur) => {
+    if (!acc[cur.id]) {
+      acc[cur.id] = []
+    }
+    acc[cur.id].push(cur)
+    return acc
+  }, {})
+
   const noticeList = {
     infoList: NoticeListAllResponse.infoList,
     bugList: NoticeListAllResponse.bugList,
@@ -178,6 +186,7 @@ export function getXMaster([
     produceDescriptionEffectTypes,
     produceDescriptionExamEffectType,
     characterTrueEndBonus,
+    characterTrueEndBonuses,
     noticeList,
     events,
     pvp,

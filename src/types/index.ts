@@ -171,6 +171,7 @@ export type XMaster = {
   produceDescriptionEffectTypes: { [type in ProduceEffectType]: ProduceDescriptionProduceEffect },
   produceDescriptionExamEffectType: { [type in ProduceExamEffectType]: ProduceDescriptionExamEffect },
   characterTrueEndBonus: { [id: string]: CharacterTrueEndBonus },
+  characterTrueEndBonuses: { [id: string]: CharacterTrueEndBonus[] },
   noticeList: {
     infoList: NoticeInfo[]
     bugList: NoticeInfo[]
