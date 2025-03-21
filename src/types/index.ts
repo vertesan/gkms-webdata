@@ -6,6 +6,7 @@ import {
 } from "~/types/proto/papi"
 import {
   Event,
+  ProduceDescriptionSegment,
 } from "~/types/proto/pcommon"
 import {
   ProduceEffectType,
@@ -51,6 +52,7 @@ import {
   ProduceExamBattleScoreConfig,
   ProduceExamEffect,
   ProduceExamGimmickEffectGroup,
+  ProduceExamTrigger,
   ProduceGroup,
   ProduceItem,
   ProduceSkill,
@@ -130,6 +132,7 @@ export type UsedDB = {
   // memory
   MemoryAbility: MemoryAbility
   GuildReaction: GuildReaction[]
+  ProduceExamTrigger: ProduceExamTrigger[]
 }
 
 export type Master = [
@@ -297,6 +300,7 @@ export type PCard = [
   ProduceCardGrowEffect[],
   ProduceDescriptionProduceCardGrowEffect[],
   ProduceCardStatusEnchant[],
+  ProduceExamTrigger[],
 ]
 
 export type XProduceCard = Omit<ProduceCard, 'playEffects'> & {
@@ -312,6 +316,7 @@ export type XCustProduceCard = XProduceCard & {
       examEffect?: ProduceExamEffect
       growEffectDescription: ProduceDescriptionProduceCardGrowEffect
       produceCardStatusEnchant?: ProduceCardStatusEnchant
+      addDescriptions?: ProduceDescriptionSegment[]
     })[]
   })[][]
 }

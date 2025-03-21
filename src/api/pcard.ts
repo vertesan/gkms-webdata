@@ -1,7 +1,8 @@
 import { PCard, XCustProduceCard, XProduceCard } from "~/types";
-import { ProduceCard, ProduceCardCustomize, ProduceCardCustomizeRarityEvaluation, ProduceCardGrowEffect, ProduceCardStatusEnchant, ProduceDescriptionProduceCardGrowEffect, ProduceExamEffect } from "~/types/proto/pmaster";
+import { ProduceCard, ProduceCardCustomize, ProduceCardCustomizeRarityEvaluation, ProduceCardGrowEffect, ProduceCardStatusEnchant, ProduceDescriptionProduceCardGrowEffect, ProduceExamEffect, ProduceExamTrigger } from "~/types/proto/pmaster";
 import { UnArray } from "~/types/utils";
 import { filterItems } from "./apiUtils";
+import { ProduceCardGrowEffectType } from "~/types/proto/penum";
 
 export function getExamEffects(
   produceExamEffects: ProduceExamEffect[]
@@ -72,6 +73,7 @@ export function getSingleXCustProduceCard(
   cardCustomizesDB: ProduceCardCustomize[],
   cardGrowEffectsDB: ProduceCardGrowEffect[],
   cardStatusEnchantDB: ProduceCardStatusEnchant[],
+  produceExamTriggerDB: ProduceExamTrigger[],
 ): XCustProduceCard {
   return {
     ...getSingleXProduceCard(produceCard, examEffects),
@@ -87,11 +89,25 @@ export function getSingleXCustProduceCard(
           if (growEffect.produceCardStatusEnchantId) {
             produceCardStatusEnchant = cardStatusEnchantDB.find(x => x.id === growEffect.produceCardStatusEnchantId)
           }
+          // additional descriptions
+          let addDescriptions = undefined
+          if (growEffect.effectType === ProduceCardGrowEffectType.PlayTriggerChange) {
+            const exTrigger = produceExamTriggerDB.find(x => x.id === growEffect.playProduceExamTriggerId)
+            if (exTrigger) {
+              addDescriptions = exTrigger.playProduceDescriptions
+            }
+          } else if (growEffect.effectType === ProduceCardGrowEffectType.PlayEffectTriggerChange) {
+            const exTrigger = produceExamTriggerDB.find(x => x.id === growEffect.playEffectProduceExamTriggerId)
+            if (exTrigger) {
+              addDescriptions = exTrigger.playEffectProduceDescriptions
+            }
+          }
           return {
             ...growEffect,
             examEffect,
             growEffectDescription,
             produceCardStatusEnchant,
+            addDescriptions,
           }
         })
         return {
@@ -112,6 +128,7 @@ export function getXCustProduceCards([
   ProduceCardGrowEffect,
   ProduceDescriptionProduceCardGrowEffects,
   ProduceCardStatusEnchant,
+  ProduceExamTrigger,
 ]: PCard): XCustProduceCard[] {
 
   const examEffects = getExamEffects(ProduceExamEffect)
@@ -129,6 +146,7 @@ export function getXCustProduceCards([
         ProduceCardCustomize,
         ProduceCardGrowEffect,
         ProduceCardStatusEnchant,
+        ProduceExamTrigger,
       )
     })
 

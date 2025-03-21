@@ -21,6 +21,7 @@ export async function getPCard(env: Env): Promise<PCard | null> {
     "ProduceCardGrowEffect",
     "ProduceDescriptionProduceCardGrowEffect",
     "ProduceCardStatusEnchant",
+    "ProduceExamTrigger",
   ], env)
 }
 
