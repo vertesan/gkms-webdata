@@ -168,7 +168,7 @@ export function getXMaster([
   }, {})
 
   const resultGradePatterns = ResultGradePattern
-    .filter(x => x.type === ResultGradeType.ProduceScore)
+    .filter(x => x.type === ResultGradeType.ProduceScore && ResultGrade[x.grade] !== undefined)
     .map(x => {
 
       return {
