@@ -136,7 +136,7 @@ export type UsedDB = {
 }
 
 export type Master = [
-  { version: string },
+  Version: { version: string },
   Character[],
   ProduceEffectIcon[],
   Produce[],
@@ -163,6 +163,7 @@ export type Master = [
   ResultGradePattern[],
   GuildReaction[],
   ProduceDescriptionLabel[],
+  ProduceGroup[],
 ]
 
 export type XMaster = {
@@ -204,6 +205,7 @@ export type XMaster = {
   resultGradePatterns: XResultGradePattern[],
   guildReactions: GuildReaction[],
   produceDescriptionLabels: { [id: string]: ProduceDescriptionLabel },
+  produceGroups: ProduceGroup[],
 }
 
 export type Csprt = [
