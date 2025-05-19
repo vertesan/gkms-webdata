@@ -30,6 +30,7 @@ export function getXSupportCard([
   ProduceCardGrowEffect,
   ProduceDescriptionProduceCardGrowEffect,
   ProduceCardStatusEnchant,
+  ProduceExamTrigger,
 ]: Csprt
 ): XSupportCard[] {
   const supportCardProduceSkillLevels = [
@@ -55,6 +56,7 @@ export function getXSupportCard([
         ProduceCardCustomize,
         ProduceCardGrowEffect,
         ProduceCardStatusEnchant,
+        ProduceExamTrigger,
       ))
     const produceItems = filterItems(ProduceItems, "originSupportCardId", supportCard.id, { sortRules: ["evaluation", true] })
     const produceEvents: XSupportCard["produceEvents"] = filterItems(

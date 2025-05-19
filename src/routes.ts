@@ -1,9 +1,5 @@
-import { getCidol, getCsprt, getMaster, getMemoryInspector, getPCard } from "~/kv"
+import { getGXJsonString, getMaster } from "~/kv"
 import { getXMaster } from "~/api/master"
-import { getXSupportCard } from "~/api/csprt"
-import { getXIdolCard } from "./api/cidol"
-import { getXCustProduceCards } from "./api/pcard"
-import { getXMemoryInspector } from "./api/memoryInspector"
 
 export enum ApiTypes {
   master = "master",
@@ -38,10 +34,9 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
       }
       break
     case ApiTypes.csprt:
-      const csprt = await getCsprt(env)
+      const csprt = await getGXJsonString(env, "GXSupportCard")
       if (csprt) {
-        const xSupportCards = getXSupportCard(csprt)
-        return new Response(JSON.stringify(xSupportCards), {
+        return new Response(csprt, {
           headers: {
             ...headers,
             "Cache-Control": "public, max-age=150, s-maxage=600"
@@ -50,10 +45,9 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
       }
       break
     case ApiTypes.cidol:
-      const cidol = await getCidol(env)
+      const cidol = await getGXJsonString(env, "GXIdolCard")
       if (cidol) {
-        const xIdolCards = getXIdolCard(cidol)
-        return new Response(JSON.stringify(xIdolCards), {
+        return new Response(cidol, {
           headers: {
             ...headers,
             "Cache-Control": "public, max-age=150, s-maxage=600"
@@ -62,10 +56,9 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
       }
       break
     case ApiTypes.pcard:
-      const pcard = await getPCard(env)
+      const pcard = await getGXJsonString(env, "GXProduceCard")
       if (pcard) {
-        const xPCards = getXCustProduceCards(pcard)
-        return new Response(JSON.stringify(xPCards), {
+        return new Response(pcard, {
           headers: {
             ...headers,
             "Cache-Control": "public, max-age=150, s-maxage=600"
@@ -74,10 +67,9 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
       }
       break
     case ApiTypes.memory:
-      const memoryInspector = await getMemoryInspector(env)
+      const memoryInspector = await getGXJsonString(env, "GXMemory")
       if (memoryInspector) {
-        const xMemoryInspector = getXMemoryInspector(memoryInspector)
-        return new Response(JSON.stringify(xMemoryInspector), {
+        return new Response(memoryInspector, {
           headers: {
             ...headers,
             "Cache-Control": "public, max-age=600, s-maxage=3600"

@@ -1,28 +1,18 @@
-import { Cidol, Csprt, Master, MemoryInspector, PCard, UsedDB, isNonNull } from "~/types"
+import { Master, UsedDB, isNonNull } from "~/types"
 import { MappedUsedDBTuple, UnionArrayToTuple } from "~/types/utils"
+import zlib from 'node:zlib';
+import { promisify } from 'node:util';
 
-export async function getMemoryInspector(env: Env): Promise<MemoryInspector | null> {
-  return await getAllJson([
-    "ProduceCard",
-    "ProduceExamEffect",
-    "ProduceItem",
-    "MemoryAbility",
-    "ProduceSkill",
-    "ProduceEffect",
-  ], env)
-}
+const gunzip = promisify(zlib.gunzip);
 
-export async function getPCard(env: Env): Promise<PCard | null> {
-  return await getAllJson([
-    "ProduceCard",
-    "ProduceExamEffect",
-    "ProduceCardCustomize",
-    "ProduceCardCustomizeRarityEvaluation",
-    "ProduceCardGrowEffect",
-    "ProduceDescriptionProduceCardGrowEffect",
-    "ProduceCardStatusEnchant",
-    "ProduceExamTrigger",
-  ], env)
+export async function getGXJsonString(env: Env, key: string): Promise<string | null> {
+  const buf = await env.GKMS_KV.get(key, { type: "arrayBuffer" })
+  if (!buf) {
+    console.error(`${key} is null in KV`)
+    return null
+  }
+  const data = await gunzip(buf)
+  return data.toString()
 }
 
 export async function getMaster(env: Env): Promise<Master | null> {
@@ -54,53 +44,6 @@ export async function getMaster(env: Env): Promise<Master | null> {
     "ResultGradePattern",
     "GuildReaction",
     "ProduceDescriptionLabel",
-  ], env)
-}
-
-export async function getCsprt(env: Env): Promise<Csprt | null> {
-  return await getAllJson([
-    "SupportCard",
-    "ProduceCard",
-    "ProduceItem",
-    "ProduceEventSupportCard",
-    "ProduceStepEventDetail",
-    "ProduceEffect",
-    "SupportCardProduceSkillLevelDance",
-    "SupportCardProduceSkillLevelVocal",
-    "SupportCardProduceSkillLevelVisual",
-    "SupportCardProduceSkillLevelAssist",
-    "ProduceSkill",
-    "ProduceTrigger",
-    "ProduceExamEffect",
-    "ProduceCardCustomize",
-    "ProduceCardCustomizeRarityEvaluation",
-    "ProduceCardGrowEffect",
-    "ProduceDescriptionProduceCardGrowEffect",
-    "ProduceCardStatusEnchant",
-  ], env)
-}
-
-export async function getCidol(env: Env): Promise<Cidol | null> {
-  return await getAllJson([
-    "IdolCard",
-    "IdolCardSkin",
-    "IdolCardLevelLimit",
-    "IdolCardLevelLimitProduceSkill",
-    "IdolCardLevelLimitStatusUp",
-    "IdolCardPotential",
-    "IdolCardPotentialProduceSkill",
-    "ProduceCard",
-    "ProduceItem",
-    "ProduceSkill",
-    "ProduceEffect",
-    "ProduceStepAuditionDifficulty",
-    "ProduceExamBattleNpcGroup",
-    "ProduceExamBattleConfig",
-    "ProduceExamBattleScoreConfig",
-    "ProduceExamGimmickEffectGroup",
-    "ProduceExamEffect",
-    "ProduceGroup",
-    "Produce",
   ], env)
 }
 

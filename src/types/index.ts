@@ -225,6 +225,7 @@ export type Csprt = [
   ProduceCardGrowEffect[],
   ProduceDescriptionProduceCardGrowEffect[],
   ProduceCardStatusEnchant[],
+  ProduceExamTrigger[],
 ]
 
 export type XSupportCard = SupportCard & {
