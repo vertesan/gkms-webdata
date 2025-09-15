@@ -22,10 +22,9 @@ export async function constructResponse(apiType: ApiTypes, env: Env): Promise<Re
   }
   switch (apiType) {
     case ApiTypes.master:
-      const master = await getMaster(env)
+      const master = await getGXJsonString(env, "GXMaster")
       if (master) {
-        const xMaster = getXMaster(master)
-        return new Response(JSON.stringify(xMaster), {
+        return new Response(master, {
           headers: {
             ...headers,
             "Cache-Control": "public, max-age=150, s-maxage=600"
